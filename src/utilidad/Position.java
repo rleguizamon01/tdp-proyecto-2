@@ -1,33 +1,33 @@
 package utilidad;
 
 public class Position {
-	protected int x;
-	protected int y;
+	protected int f;
+	protected int c;
 	
-	public Position(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Position(int f, int c) {
+		this.f = f;
+		this.c = c;
 	}
 	
 	public Position() {
-		x = 0;
-		y = 0;
+		f = 0;
+		c = 0;
 	}
 
-	public int getX() {
-		return x;
+	public int getFila() {
+		return f;
 	}
 
-	public void setX(int x) {
-		this.x = x;
+	public void setFila(int f) {
+		this.f = f;
 	}
 
-	public int getY() {
-		return y;
+	public int getColumna() {
+		return c;
 	}
 
-	public void setY(int y) {
-		this.y = y;
+	public void setColumna(int c) {
+		this.c = c;
 	}
 	
 }

@@ -12,6 +12,7 @@ public abstract class Tetrimino {
 	protected Bloque bloqueD;
 	
 	public Tetrimino() {
+		anguloActual = 0;
 		bloqueA = null;
 		bloqueB = null;
 		bloqueC = null;
@@ -19,6 +20,7 @@ public abstract class Tetrimino {
 	}
 	
 	public Tetrimino(Bloque a, Bloque b, Bloque c, Bloque d) {
+		anguloActual = 0;
 		bloqueA = a;
 		bloqueB = b;
 		bloqueC = c;
@@ -40,12 +42,24 @@ public abstract class Tetrimino {
 		return arregloDeBloques;
 	}
 	
+	public Position[] getPosicionesActuales() {
+		Position[] posiciones = new Position[4];
+		int i = 0;
+		
+		for (Bloque b : getBloquesActuales()) {
+			posiciones[i] = b.getPosicion();
+			i++;
+		}
+		
+		return posiciones;
+	}
+	
 	public Position[] getPosicionesAbajo() {
 		Position[] posicionesAbajo = new Position[4];
 		int i = 0;
 		
 		for (Bloque b : getBloquesActuales()) {
-			posicionesAbajo[i] = new Position(b.getPosicion().getX(), b.getPosicion().getY()+1);
+			posicionesAbajo[i] = new Position(b.getPosicion().getFila()+1, b.getPosicion().getColumna());
 			i++;
 		}
 		
@@ -57,7 +71,7 @@ public abstract class Tetrimino {
 		int i = 0;
 		
 		for (Bloque b : getBloquesActuales()) {
-			posicionesIzquierda[i] = new Position(b.getPosicion().getX()-1, b.getPosicion().getY());
+			posicionesIzquierda[i] = new Position(b.getPosicion().getFila(), b.getPosicion().getColumna()-1);
 			i++;
 		}
 		
@@ -69,16 +83,55 @@ public abstract class Tetrimino {
 		int i = 0;
 		
 		for (Bloque b : getBloquesActuales()) {
-			posicionesDerecha[i] = new Position(b.getPosicion().getX()+1, b.getPosicion().getY());
+			posicionesDerecha[i] = new Position(b.getPosicion().getFila(), b.getPosicion().getColumna()+1);
 			i++;
 		}
 		
 		return posicionesDerecha;
 	}
 	
-	public abstract Position[] getRotacionIzquierda();
+	public Position[] getRotacionIzquierda() {
+		Position[] posicionesRotadas = null;
+		
+		switch(anguloActual) {
+			case 0:
+				posicionesRotadas = rotacionNoventa();
+				break;
+			case 90:
+				posicionesRotadas = rotacionCienOchenta();
+				break;
+			case 180:
+				posicionesRotadas = rotacionDosSetenta();
+				break;
+			case 270:
+				posicionesRotadas = rotacionCero();
+				break;
+		}
+		
+		return posicionesRotadas;
+	}
 	
-	public abstract Position[] getRotacionDerecha();
+	public Position[] getRotacionDerecha() {
+		Position[] posicionesRotadas = null;
+		
+		switch(anguloActual) {
+			case 0:
+				posicionesRotadas = rotacionDosSetenta();
+				break;
+			case 90:
+				posicionesRotadas = rotacionCero();
+				break;
+			case 180:
+				posicionesRotadas = rotacionNoventa();
+				break;
+			case 270:
+				posicionesRotadas = rotacionCienOchenta();
+				break;
+		}
+		
+		return posicionesRotadas;
+		
+	}
 	
 	public void hacerEstatico() {
 		for (Bloque b : getBloquesActuales()) {
@@ -105,4 +158,11 @@ public abstract class Tetrimino {
 	public void setBloqueD(Bloque bloqueD) {
 		this.bloqueD = bloqueD;
 	}
+	
+	//Las rotaciones funcionan tomando a BloqueB como ancla (pues nunca cambia su posicion al rotar)
+	//Y expresando las posiciones de todos los otros bloques en funcion de el.
+	protected abstract Position[] rotacionCero();
+	protected abstract Position[] rotacionNoventa();
+	protected abstract Position[] rotacionCienOchenta();
+	protected abstract Position[] rotacionDosSetenta();
 }
