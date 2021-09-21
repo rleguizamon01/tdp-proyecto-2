@@ -10,7 +10,7 @@ public class Bloque {
 	
 	public Bloque() {
 		pos = null;
-		caminoImagen = "/assets/images/bloqueVacio.jpg";
+		caminoImagen = "/assets/images/bloqueVacio.png";
 		ocupado = false;
 		estatico = false;
 	}
