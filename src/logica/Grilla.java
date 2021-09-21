@@ -59,10 +59,48 @@ public class Grilla {
 	
 	public void moverAbajo() {
 		
+		Position[] posicionesActuales = tetriminoActual.getPosicionesActuales();
+		
+		Position[] posicionesAbajo = tetriminoActual.getPosicionesAbajo();
+		
+		if (posicionesLibres(posicionesAbajo)) {
+			
+			tetriminoActual.setBloqueA(matrizGrilla[posicionesAbajo[0].getFila()][posicionesAbajo[0].getColumna()]);
+			tetriminoActual.setBloqueB(matrizGrilla[posicionesAbajo[1].getFila()][posicionesAbajo[1].getColumna()]);
+			tetriminoActual.setBloqueC(matrizGrilla[posicionesAbajo[2].getFila()][posicionesAbajo[2].getColumna()]);
+			tetriminoActual.setBloqueD(matrizGrilla[posicionesAbajo[3].getFila()][posicionesAbajo[3].getColumna()]);
+			
+			miJuego.pedirActualizar(posicionesAbajo, tetriminoActual.getBloquesActuales()[0].getCaminoImagen());
+			miJuego.pedirActualizar(posicionesActuales, tetriminoActual.getBloquesActuales()[0].getCaminoImagen());
+			
+		} else {
+			
+			tetriminoActual.hacerEstatico();
+			
+		}
+		
+		if (perdio())
+			miJuego.finalizarPartida();
+		else {
+			
+			
+			
+		}
+		
 	}
 	
 	private boolean posicionesLibres(Position[] ps) {
-		return false;
+		
+		boolean result = true;
+		
+		// MUCHO TEXTO. CHECKEAR QUE NO SE SALE DE LA GRILLA (?
+		
+		for(int i = 0; (i < ps.length) && result; i++) {
+			if (matrizGrilla[ps[i].getFila()][ps[i].getColumna()].estaOcupado())
+				result = false;
+		}
+		
+		return result;
 	}
 	
 	private boolean perdio() {

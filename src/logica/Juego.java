@@ -45,7 +45,17 @@ public class Juego {
 	}
 	
 	public void pedirActualizar(Position pos, String imagePath) {
+		
 		this.miGui.actualizar(pos, imagePath);
+	
+	}
+	
+	public void pedirActualizar(Position[] pos, String imagePath) {
+		
+		for (Position p: pos) {
+			this.miGui.actualizar(p, imagePath);
+		}
+		
 	}
 	
 	/**public void actualizarTiempo(String tiempoNuevo) {
@@ -59,4 +69,5 @@ public class Juego {
 	/**public void actualizarSiguienteTetrimino(String nuevoTetrimino) {
 		this.miGrilla.generarSiguienteTetrimino();
 	}**/
+	
 }
