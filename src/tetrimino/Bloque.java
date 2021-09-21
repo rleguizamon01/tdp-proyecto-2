@@ -74,4 +74,8 @@ public class Bloque {
 	public void hacerEstatico() {
 		estatico = true;
 	}
+	
+	public void setCaminoImagen(String imagePath) {
+		caminoImagen = imagePath;
+	}
 }

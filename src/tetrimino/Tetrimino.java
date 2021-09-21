@@ -21,6 +21,7 @@ public abstract class Tetrimino {
 	
 	public Tetrimino(Bloque a, Bloque b, Bloque c, Bloque d) {
 		anguloActual = 0;
+		
 		bloqueA = a;
 		bloqueB = b;
 		bloqueC = c;
@@ -157,6 +158,15 @@ public abstract class Tetrimino {
 
 	public void setBloqueD(Bloque bloqueD) {
 		this.bloqueD = bloqueD;
+	}
+	
+	protected void actualizarCaminoImagen() {
+		String aux = "/assets/images/bloque" + tipoTetrimino +".png";
+		
+		bloqueA.setCaminoImagen(aux);
+		bloqueB.setCaminoImagen(aux);
+		bloqueC.setCaminoImagen(aux);
+		bloqueD.setCaminoImagen(aux);
 	}
 	
 	//Las rotaciones funcionan tomando a BloqueB como ancla (pues nunca cambia su posicion al rotar)

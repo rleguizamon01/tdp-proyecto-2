@@ -12,6 +12,7 @@ public class TetriminoI extends Tetrimino {
 	public TetriminoI(Bloque a, Bloque b, Bloque c, Bloque d) {
 		super(a, b, c, d);
 		tipoTetrimino = 'I';
+		actualizarCaminoImagen();
 	}
 	
 	protected Position[] rotacionCero() {

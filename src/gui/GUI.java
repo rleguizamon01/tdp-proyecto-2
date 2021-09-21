@@ -12,6 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
+import logica.Juego;
 import utilidad.Position;
 
 import java.awt.Color;
@@ -32,6 +33,8 @@ public class GUI {
 	private JTextArea txtrCreditos;
 	private JLabel[][] matrizLabels;
 	private JTextArea txtrCaptadorDeEventos;
+	
+	private Juego miJuego;
 	
 	/**
 	 * Launch the application.
@@ -54,6 +57,7 @@ public class GUI {
 	 */
 	public GUI() {
 		initialize();
+		miJuego = new Juego(this);
 		actualizarSiguienteTetrimino("/assets/images/tetriminoL.png");
 	}
 
@@ -78,7 +82,6 @@ public class GUI {
 		informacion.setLayout(null);
 		
 		lblProximoTetrimino = new JLabel("Proximo Tetrimino");
-		//lblProximoTetrimino.setHorizontalAlignment(SwingConstants.CENTER);
 		lblProximoTetrimino.setBounds(10, 11, 84, 84);
 		lblProximoTetrimino.setBorder(new LineBorder(new Color(0, 0, 0)));
 		informacion.add(lblProximoTetrimino);
@@ -165,7 +168,7 @@ public class GUI {
 		matrizLabels[f][c].setIcon(new ImageIcon(GUI.class.getResource(imagePath)));
 	}
 	
-	public void actualizar(Position pos, String imagePath) {
+	public void actualizar(Position pos, String imagePath) {		
 		matrizLabels[pos.getFila()][pos.getColumna()].setIcon(new ImageIcon(GUI.class.getResource(imagePath)));
 	}
 	

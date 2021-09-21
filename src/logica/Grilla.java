@@ -15,28 +15,27 @@ public class Grilla {
 	public Grilla(Juego miJuego) {
 		
 		Bloque bloque;
-		Position position;
 		
 		matrizGrilla = new Bloque[10][21];
+		int j;
 		
 		for (int i = 0; i < matrizGrilla.length; i++) {
-			
-			for (int j = 0; j < matrizGrilla[0].length; j++) {
-				
-				bloque = new Bloque();
-				position = new Position(i,j);
-				
-				bloque.getPosicion().setFila(i);
-				bloque.getPosicion().setColumna(j);
+			for (j = 0; j < matrizGrilla[0].length; j++) {
+				bloque = new Bloque(new Position(i, j), "/assets/images/bloqueVacio.png", false);
 				
 				matrizGrilla[i][j] = bloque;
-				
 			}
+			
+			j = 0;
 		}
 		
 		this.miJuego = miJuego;
 		
 		tetriminoActual = new TetriminoT(matrizGrilla[4][0], matrizGrilla[4][1], matrizGrilla[3][1], matrizGrilla[5][1]);
+		
+		for(Bloque b : tetriminoActual.getBloquesActuales()) {
+			miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
+		}
 		
 		generarSiguienteTetrimino();
 		

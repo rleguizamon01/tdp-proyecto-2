@@ -1,5 +1,8 @@
 package logica;
 
+import gui.GUI;
+import utilidad.*;
+
 public class Juego {
 	protected int puntaje;
 	protected int dificultad;
@@ -9,8 +12,8 @@ public class Juego {
 	
 	public Juego(GUI gui) {
 		this.miGui = gui;
-		this.miGrilla = new Grilla();
-		this.miReloj = new Reloj();
+		this.miGrilla = new Grilla(this);
+		this.miReloj = new Reloj(this);
 	}
 	
 	public void iniciarPartida() {
@@ -45,15 +48,15 @@ public class Juego {
 		this.miGui.actualizar(pos, imagePath);
 	}
 	
-	public void actualizarTiempo(String tiempoNuevo) {
+	/**public void actualizarTiempo(String tiempoNuevo) {
 		this.miReloj.setIntervalo(tiempoNuevo);
-	}
+	}**/
 	
 	public void actualizarPuntaje(int puntajeNuevo) {
-		this.miGui.setPuntaje(puntajeNuevo);
+		this.miGui.actualizarPuntaje(Integer.toString(puntajeNuevo));
 	}
 	
-	public void actualizarSiguienteTetrimino(String nuevoTetrimino) {
+	/**public void actualizarSiguienteTetrimino(String nuevoTetrimino) {
 		this.miGrilla.generarSiguienteTetrimino();
-	}
+	}**/
 }
