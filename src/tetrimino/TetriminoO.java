@@ -34,5 +34,11 @@ public class TetriminoO extends Tetrimino {
 	protected Position[] rotacionDosSetenta() {
 		return getPosicionesActuales();
 	}
+	
+	public Tetrimino clone() {
+		Tetrimino t = new TetriminoO(bloqueA, bloqueB, bloqueC, bloqueD);
+		t.setAnguloActual(anguloActual);
+		return t;
+	}
 
 }

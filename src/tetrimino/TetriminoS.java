@@ -66,5 +66,11 @@ public class TetriminoS extends Tetrimino {
 		
 		return nuevasPosiciones;
 	}
+	
+	public Tetrimino clone() {
+		Tetrimino t = new TetriminoS(bloqueA, bloqueB, bloqueC, bloqueD);
+		t.setAnguloActual(anguloActual);
+		return t;
+	}
 
 }

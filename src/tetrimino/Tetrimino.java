@@ -179,4 +179,5 @@ public abstract class Tetrimino {
 	protected abstract Position[] rotacionNoventa();
 	protected abstract Position[] rotacionCienOchenta();
 	protected abstract Position[] rotacionDosSetenta();
+	public abstract Tetrimino clone();
 }
