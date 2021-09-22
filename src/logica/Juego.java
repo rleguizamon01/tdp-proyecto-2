@@ -68,8 +68,8 @@ public class Juego {
 		this.miGui.actualizarPuntaje(Integer.toString(puntaje));
 	}
 	
-	/**public void actualizarSiguienteTetrimino(String nuevoTetrimino) {
-		this.miGrilla.generarSiguienteTetrimino();
-	}**/
+	public void actualizarSiguienteTetrimino(String nuevoTetrimino) {
+		this.miGui.actualizarSiguienteTetrimino(nuevoTetrimino);
+	}
 	
 }

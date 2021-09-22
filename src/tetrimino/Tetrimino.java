@@ -164,6 +164,10 @@ public abstract class Tetrimino {
 		return "/assets/images/bloque" + tipoTetrimino +".png";
 	}
 	
+	public String getCaminoImagenTetrimino() {
+		return "/assets/images/tetrimino" + tipoTetrimino +".png";
+	}
+	
 	public void actualizarCaminoImagen() {
 		String aux = getCaminoImagenColor();
 		
