@@ -14,6 +14,7 @@ public class Juego {
 		this.miGui = gui;
 		this.miGrilla = new Grilla(this);
 		this.miReloj = new Reloj(this);
+		this.puntaje=0;
 	}
 	
 	public void iniciarPartida() {
@@ -62,8 +63,9 @@ public class Juego {
 		this.miReloj.setIntervalo(tiempoNuevo);
 	}**/
 	
-	public void actualizarPuntaje(int puntajeNuevo) {
-		this.miGui.actualizarPuntaje(Integer.toString(puntajeNuevo));
+	public void actualizarPuntaje(int puntosNuevos) {
+		puntaje+=puntosNuevos;
+		this.miGui.actualizarPuntaje(Integer.toString(puntaje));
 	}
 	
 	/**public void actualizarSiguienteTetrimino(String nuevoTetrimino) {
