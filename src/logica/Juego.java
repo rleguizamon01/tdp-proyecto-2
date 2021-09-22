@@ -59,9 +59,9 @@ public class Juego {
 		
 	}
 	
-	/**public void actualizarTiempo(String tiempoNuevo) {
-		this.miReloj.setIntervalo(tiempoNuevo);
-	}**/
+	public void actualizarTiempo(String tiempoNuevo) {
+		miGui.actualizarTiempo(tiempoNuevo);
+	}
 	
 	public void actualizarPuntaje(int puntosNuevos) {
 		puntaje+=puntosNuevos;

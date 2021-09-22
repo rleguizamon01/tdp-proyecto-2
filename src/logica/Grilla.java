@@ -32,6 +32,7 @@ public class Grilla {
 		this.miJuego = miJuego;
 		
 		tetriminoActual = new TetriminoT(matrizGrilla[4][0], matrizGrilla[4][1], matrizGrilla[3][1], matrizGrilla[5][1]);
+		tetriminoActual.setAnguloActual(0);
 		
 		for(Bloque b : tetriminoActual.getBloquesActuales()) {
 			miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
@@ -42,22 +43,265 @@ public class Grilla {
 	}
 	
 	public void rotarDerecha() {
-		
+		Position[] posicionesActuales = tetriminoActual.getPosicionesActuales();
+		Position[] posicionesRotadas = tetriminoActual.getRotacionDerecha();
+
+		//posicionesLibres(posicionesRotadas)
+		if(posicionesLibres(posicionesRotadas)) {
+			Bloque[] bloquesOriginales = tetriminoActual.getBloquesActuales();
+			Bloque[] bloquesNuevos = {
+					matrizGrilla[posicionesRotadas[0].getFila()][posicionesRotadas[0].getColumna()],
+					matrizGrilla[posicionesRotadas[1].getFila()][posicionesRotadas[1].getColumna()],
+					matrizGrilla[posicionesRotadas[2].getFila()][posicionesRotadas[2].getColumna()],
+					matrizGrilla[posicionesRotadas[3].getFila()][posicionesRotadas[3].getColumna()]
+			};
+			
+			//Efectuamos la Rotacion.
+			
+			//Primero, desocupamos los bloques actuales.
+			for(Bloque b : bloquesOriginales) {
+				b.desocupar();
+				b.setCaminoImagen("/assets/images/bloqueVacio.png");
+			}
+			
+			//Segundo, ocupamos los bloques nuevos.
+			tetriminoActual.setBloqueA(bloquesNuevos[0]);
+			tetriminoActual.setBloqueB(bloquesNuevos[1]);
+			tetriminoActual.setBloqueC(bloquesNuevos[2]);
+			tetriminoActual.setBloqueD(bloquesNuevos[3]);
+			
+			for(Bloque b : bloquesNuevos) {
+				b.ocupar();
+				b.setCaminoImagen(tetriminoActual.getCaminoImagenColor());
+			}
+			
+			//Tercero, ajustamos el angulo:
+			int angulo = tetriminoActual.getAnguloActual();
+			switch(angulo) {
+				case 0:
+					tetriminoActual.setAnguloActual(270);
+					break;
+				case 90:
+					tetriminoActual.setAnguloActual(0);
+					break;
+				case 180:
+					tetriminoActual.setAnguloActual(90);
+					break;
+				case 270:
+					tetriminoActual.setAnguloActual(180);
+					break;
+					
+			}
+			
+			//Cuarto, le pedimos a Juego que le pida a la GUI que actualice las imagenes de los cambios que hicimos.
+			for(Bloque b : bloquesOriginales) {
+				miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
+			}
+			for(Bloque b : bloquesNuevos) {
+				miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
+			}
+		}
 	}
 	
 	public void rotarIzquierda() {
-		
+		Position[] posicionesActuales = tetriminoActual.getPosicionesActuales();
+		Position[] posicionesRotadas = tetriminoActual.getRotacionIzquierda();
+
+		//posicionesLibres(posicionesRotadas)
+		if(posicionesLibres(posicionesRotadas)) {
+			Bloque[] bloquesOriginales = tetriminoActual.getBloquesActuales();
+			Bloque[] bloquesNuevos = {
+					matrizGrilla[posicionesRotadas[0].getFila()][posicionesRotadas[0].getColumna()],
+					matrizGrilla[posicionesRotadas[1].getFila()][posicionesRotadas[1].getColumna()],
+					matrizGrilla[posicionesRotadas[2].getFila()][posicionesRotadas[2].getColumna()],
+					matrizGrilla[posicionesRotadas[3].getFila()][posicionesRotadas[3].getColumna()]
+			};
+			
+			//Efectuamos la Rotacion.
+			
+			//Primero, desocupamos los bloques actuales.
+			for(Bloque b : bloquesOriginales) {
+				b.desocupar();
+				b.setCaminoImagen("/assets/images/bloqueVacio.png");
+			}
+			
+			//Segundo, ocupamos los bloques nuevos.
+			tetriminoActual.setBloqueA(bloquesNuevos[0]);
+			tetriminoActual.setBloqueB(bloquesNuevos[1]);
+			tetriminoActual.setBloqueC(bloquesNuevos[2]);
+			tetriminoActual.setBloqueD(bloquesNuevos[3]);
+			
+			for(Bloque b : bloquesNuevos) {
+				b.ocupar();
+				b.setCaminoImagen(tetriminoActual.getCaminoImagenColor());
+			}
+			
+			//Tercero, ajustamos el angulo:
+			int angulo = tetriminoActual.getAnguloActual();
+			switch(angulo) {
+				case 0:
+					tetriminoActual.setAnguloActual(90);
+					break;
+				case 90:
+					tetriminoActual.setAnguloActual(180);
+					break;
+				case 180:
+					tetriminoActual.setAnguloActual(270);
+					break;
+				case 270:
+					tetriminoActual.setAnguloActual(0);
+					break;
+					
+			}
+			
+			//Cuarto, le pedimos a Juego que le pida a la GUI que actualice las imagenes de los cambios que hicimos.
+			for(Bloque b : bloquesOriginales) {
+				miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
+			}
+			for(Bloque b : bloquesNuevos) {
+				miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
+			}
+		}
 	}
 	
 	public void moverIzquierda() {
+		Position[] posicionesActuales = tetriminoActual.getPosicionesActuales();
+		Position[] posicionesCorridas = tetriminoActual.getPosicionesIzquierda();
 		
+		//posicionesLibres(posicionesCorridas)
+		if(posicionesLibres(posicionesCorridas)) {
+			Bloque[] bloquesOriginales = tetriminoActual.getBloquesActuales();
+			Bloque[] bloquesNuevos = {
+					matrizGrilla[posicionesCorridas[0].getFila()][posicionesCorridas[0].getColumna()],
+					matrizGrilla[posicionesCorridas[1].getFila()][posicionesCorridas[1].getColumna()],
+					matrizGrilla[posicionesCorridas[2].getFila()][posicionesCorridas[2].getColumna()],
+					matrizGrilla[posicionesCorridas[3].getFila()][posicionesCorridas[3].getColumna()]
+			};
+			
+			//Efectuamos la Rotacion.
+			
+			//Primero, desocupamos los bloques actuales.
+			for(Bloque b : bloquesOriginales) {
+				b.desocupar();
+				b.setCaminoImagen("/assets/images/bloqueVacio.png");
+			}
+			
+			//Segundo, ocupamos los bloques nuevos.
+			tetriminoActual.setBloqueA(bloquesNuevos[0]);
+			tetriminoActual.setBloqueB(bloquesNuevos[1]);
+			tetriminoActual.setBloqueC(bloquesNuevos[2]);
+			tetriminoActual.setBloqueD(bloquesNuevos[3]);
+			
+			for(Bloque b : bloquesNuevos) {
+				b.ocupar();
+				b.setCaminoImagen(tetriminoActual.getCaminoImagenColor());
+			}
+			
+			//Tercero, le pedimos a Juego que le pida a la GUI que actualice las imagenes de los cambios que hicimos.
+			for(Bloque b : bloquesOriginales) {
+				miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
+			}
+			for(Bloque b : bloquesNuevos) {
+				miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
+			}
+		}
 	}
 	
 	public void moverDerecha() {
-		
+		Position[] posicionesActuales = tetriminoActual.getPosicionesActuales();
+		Position[] posicionesCorridas = tetriminoActual.getPosicionesDerecha();
+
+		//posicionesLibres(posicionesCorridas)
+		if(posicionesLibres(posicionesCorridas)) {
+			Bloque[] bloquesOriginales = tetriminoActual.getBloquesActuales();
+			Bloque[] bloquesNuevos = {
+					matrizGrilla[posicionesCorridas[0].getFila()][posicionesCorridas[0].getColumna()],
+					matrizGrilla[posicionesCorridas[1].getFila()][posicionesCorridas[1].getColumna()],
+					matrizGrilla[posicionesCorridas[2].getFila()][posicionesCorridas[2].getColumna()],
+					matrizGrilla[posicionesCorridas[3].getFila()][posicionesCorridas[3].getColumna()]
+			};
+			
+			//Efectuamos la Rotacion.
+			
+			//Primero, desocupamos los bloques actuales.
+			for(Bloque b : bloquesOriginales) {
+				b.desocupar();
+				b.setCaminoImagen("/assets/images/bloqueVacio.png");
+			}
+			
+			//Segundo, ocupamos los bloques nuevos.
+			tetriminoActual.setBloqueA(bloquesNuevos[0]);
+			tetriminoActual.setBloqueB(bloquesNuevos[1]);
+			tetriminoActual.setBloqueC(bloquesNuevos[2]);
+			tetriminoActual.setBloqueD(bloquesNuevos[3]);
+			
+			for(Bloque b : bloquesNuevos) {
+				b.ocupar();
+				b.setCaminoImagen(tetriminoActual.getCaminoImagenColor());
+			}
+			
+			//Tercero, le pedimos a Juego que le pida a la GUI que actualice las imagenes de los cambios que hicimos.
+			for(Bloque b : bloquesOriginales) {
+				miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
+			}
+			for(Bloque b : bloquesNuevos) {
+				miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
+			}
+		}
 	}
 	
 	public void moverAbajo() {
+		Position[] posicionesActuales = tetriminoActual.getPosicionesActuales();
+		Position[] posicionesCorridas = tetriminoActual.getPosicionesAbajo();
+
+		//posicionesLibres(posicionesCorridas)
+		if(posicionesLibres(posicionesCorridas)) {
+			Bloque[] bloquesOriginales = tetriminoActual.getBloquesActuales();
+			Bloque[] bloquesNuevos = {
+					matrizGrilla[posicionesCorridas[0].getFila()][posicionesCorridas[0].getColumna()],
+					matrizGrilla[posicionesCorridas[1].getFila()][posicionesCorridas[1].getColumna()],
+					matrizGrilla[posicionesCorridas[2].getFila()][posicionesCorridas[2].getColumna()],
+					matrizGrilla[posicionesCorridas[3].getFila()][posicionesCorridas[3].getColumna()]
+			};
+			
+			//Efectuamos la Rotacion.
+			
+			//Primero, desocupamos los bloques actuales.
+			for(Bloque b : bloquesOriginales) {
+				b.desocupar();
+				b.setCaminoImagen("/assets/images/bloqueVacio.png");
+			}
+			
+			//Segundo, ocupamos los bloques nuevos.
+			tetriminoActual.setBloqueA(bloquesNuevos[0]);
+			tetriminoActual.setBloqueB(bloquesNuevos[1]);
+			tetriminoActual.setBloqueC(bloquesNuevos[2]);
+			tetriminoActual.setBloqueD(bloquesNuevos[3]);
+			
+			for(Bloque b : bloquesNuevos) {
+				b.ocupar();
+				b.setCaminoImagen(tetriminoActual.getCaminoImagenColor());
+			}
+			
+			//Tercero, le pedimos a Juego que le pida a la GUI que actualice las imagenes de los cambios que hicimos.
+			for(Bloque b : bloquesOriginales) {
+				miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
+			}
+			for(Bloque b : bloquesNuevos) {
+				miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
+			}
+		} else {
+			tetriminoActual.hacerEstatico();
+			if(perdio()) {
+				System.out.println("F");
+				miJuego.finalizarPartida();
+			} else {
+				//Checkeo de Filas
+			}
+		}
+	}
+	
+	/**public void moverAbajo() {
 		
 		Position[] posicionesActuales = tetriminoActual.getPosicionesActuales();
 		Position[] posicionesAbajo = tetriminoActual.getPosicionesAbajo();
@@ -95,7 +339,7 @@ public class Grilla {
 			// Hola, por aca iria el tema de actualizar las filas y desplazar todos los bloques como corresponda
 		}
 		
-	}
+	}**/
 	
 	private boolean posicionesLibres(Position[] ps) {
 		
@@ -106,13 +350,13 @@ public class Grilla {
 			fila=ps[i].getFila();
 			columna=ps[i].getColumna();
 			
-			if(0<=fila && fila<=10 && 0<=columna && columna<=21)
-				if (matrizGrilla[fila][columna].estaOcupado()) {
+			if(0<=fila && fila<=21 && 0<=columna && columna<=10) {
+				if (!(matrizGrilla[fila][columna].estaLibre())) {
 					result = false;
 				}
-			else
+			} else {
 				result = false;
-		
+			}
 		}
 		
 		return result;

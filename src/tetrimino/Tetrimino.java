@@ -60,7 +60,7 @@ public abstract class Tetrimino {
 		int i = 0;
 		
 		for (Bloque b : getBloquesActuales()) {
-			posicionesAbajo[i] = new Position(b.getPosicion().getFila()+1, b.getPosicion().getColumna());
+			posicionesAbajo[i] = new Position(b.getPosicion().getFila(), b.getPosicion().getColumna()+1);
 			i++;
 		}
 		
@@ -72,7 +72,7 @@ public abstract class Tetrimino {
 		int i = 0;
 		
 		for (Bloque b : getBloquesActuales()) {
-			posicionesIzquierda[i] = new Position(b.getPosicion().getFila(), b.getPosicion().getColumna()-1);
+			posicionesIzquierda[i] = new Position(b.getPosicion().getFila()-1, b.getPosicion().getColumna());
 			i++;
 		}
 		
@@ -84,7 +84,7 @@ public abstract class Tetrimino {
 		int i = 0;
 		
 		for (Bloque b : getBloquesActuales()) {
-			posicionesDerecha[i] = new Position(b.getPosicion().getFila(), b.getPosicion().getColumna()+1);
+			posicionesDerecha[i] = new Position(b.getPosicion().getFila()+1, b.getPosicion().getColumna());
 			i++;
 		}
 		
@@ -160,8 +160,12 @@ public abstract class Tetrimino {
 		this.bloqueD = bloqueD;
 	}
 	
+	public String getCaminoImagenColor() {
+		return "/assets/images/bloque" + tipoTetrimino +".png";
+	}
+	
 	protected void actualizarCaminoImagen() {
-		String aux = "/assets/images/bloque" + tipoTetrimino +".png";
+		String aux = getCaminoImagenColor();
 		
 		bloqueA.setCaminoImagen(aux);
 		bloqueB.setCaminoImagen(aux);
