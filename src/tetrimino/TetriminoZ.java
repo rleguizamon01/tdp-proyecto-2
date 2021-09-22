@@ -11,7 +11,6 @@ public class TetriminoZ extends Tetrimino {
 	public TetriminoZ(Bloque a, Bloque b, Bloque c, Bloque d) {
 		super(a, b, c, d);
 		tipoTetrimino = 'Z';
-		actualizarCaminoImagen();
 	}
 	
 

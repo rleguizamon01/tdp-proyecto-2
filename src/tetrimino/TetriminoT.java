@@ -12,7 +12,6 @@ public class TetriminoT extends Tetrimino {
 	public TetriminoT(Bloque a, Bloque b, Bloque c, Bloque d) {
 		super(a, b, c, d);
 		tipoTetrimino = 'T';
-		actualizarCaminoImagen();
 	}
 
 	@Override
