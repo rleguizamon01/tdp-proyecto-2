@@ -58,7 +58,6 @@ public class GUI {
 	public GUI() {
 		initialize();
 		miJuego = new Juego(this);
-		actualizarSiguienteTetrimino("/assets/images/tetriminoL.png");
 	}
 
 	/**

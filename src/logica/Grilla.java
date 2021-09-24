@@ -1,8 +1,8 @@
 package logica;
 
-import tetrimino.Bloque;
-import tetrimino.Tetrimino;
-import tetrimino.TetriminoT;
+import java.util.concurrent.ThreadLocalRandom;
+
+import tetrimino.*;
 import utilidad.Position;
 
 public class Grilla {
@@ -11,35 +11,90 @@ public class Grilla {
 	protected Tetrimino tetriminoActual;
 	protected Tetrimino tetriminoSiguiente;
 	protected Juego miJuego;
+	
+	private Tetrimino[] posiblesTetriminos;
+	private Position[][] posiblesPosicionesIniciales;
 
+	private void inicializar() {
+		Tetrimino I = new TetriminoI();
+		Tetrimino J = new TetriminoJ();
+		Tetrimino L = new TetriminoL();
+		Tetrimino O = new TetriminoO();
+		Tetrimino S = new TetriminoS();
+		Tetrimino T = new TetriminoT();
+		Tetrimino Z = new TetriminoZ();
+		
+		posiblesTetriminos = new Tetrimino[7];
+		posiblesTetriminos[0] = I;
+		posiblesTetriminos[1] = J;
+		posiblesTetriminos[2] = L;
+		posiblesTetriminos[3] = O;
+		posiblesTetriminos[4] = S;
+		posiblesTetriminos[5] = T;
+		posiblesTetriminos[6] = Z;
+		
+		Position[] posInicialesI = {new Position(3, 1), new Position(4, 1), new Position(5, 1), new Position(6,1)};
+		Position[] posInicialesJ = {new Position(5, 1), new Position(4, 1), new Position(3, 1), new Position(3, 0)};
+		Position[] posInicialesL = {new Position(3, 1), new Position(4, 1), new Position(5, 1), new Position(5, 0)};
+		Position[] posInicialesO = {new Position(3, 1), new Position(4, 1), new Position(3, 2), new Position(4, 2)};
+		Position[] posInicialesS = {new Position(3, 1), new Position(4, 1), new Position(4, 0), new Position(5, 0)};
+		Position[] posInicialesT = {new Position(3, 1), new Position(4, 1), new Position(5, 1), new Position(4, 0)};
+		Position[] posInicialesZ = {new Position(5, 1), new Position(4, 1), new Position(4, 0), new Position(3, 0)};
+		
+		posiblesPosicionesIniciales = new Position[7][4];
+		posiblesPosicionesIniciales[0] = posInicialesI;
+		posiblesPosicionesIniciales[1] = posInicialesJ;
+		posiblesPosicionesIniciales[2] = posInicialesL;
+		posiblesPosicionesIniciales[3] = posInicialesO;
+		posiblesPosicionesIniciales[4] = posInicialesS;
+		posiblesPosicionesIniciales[5] = posInicialesT;
+		posiblesPosicionesIniciales[6] = posInicialesZ;
+	}
+	
+	private Tetrimino getRandomTetrimino() {
+		Tetrimino t;
+		int i = ThreadLocalRandom.current().nextInt(0, 7);
+		
+		t = posiblesTetriminos[i].clone();
+		Position[] pos = posiblesPosicionesIniciales[i];
+		
+		t.setBloqueA(matrizGrilla[pos[0].getFila()][pos[0].getColumna()]);
+		t.setBloqueB(matrizGrilla[pos[1].getFila()][pos[1].getColumna()]);
+		t.setBloqueC(matrizGrilla[pos[2].getFila()][pos[2].getColumna()]);
+		t.setBloqueD(matrizGrilla[pos[3].getFila()][pos[3].getColumna()]);
+		t.actualizarCaminoImagen();
+		
+		return t;
+	}
+	
 	public Grilla(Juego miJuego) {
+		inicializar();
 		
 		Bloque bloque;
-		
 		matrizGrilla = new Bloque[10][21];
+		
 		int j;
 		
 		for (int i = 0; i < matrizGrilla.length; i++) {
 			for (j = 0; j < matrizGrilla[0].length; j++) {
 				bloque = new Bloque(new Position(i, j), "/assets/images/bloqueVacio.png", false);
-				
 				matrizGrilla[i][j] = bloque;
 			}
-			
 			j = 0;
 		}
 		
 		this.miJuego = miJuego;
 		
-		tetriminoActual = new TetriminoT(matrizGrilla[4][0], matrizGrilla[4][1], matrizGrilla[3][1], matrizGrilla[5][1]);
-		tetriminoActual.setAnguloActual(0);
+		tetriminoActual = getRandomTetrimino();
+		tetriminoSiguiente = getRandomTetrimino();
+		
+		miJuego.actualizarSiguienteTetrimino(tetriminoSiguiente.getCaminoImagenTetrimino());
 		
 		for(Bloque b : tetriminoActual.getBloquesActuales()) {
+			b.ocupar();
+			b.setCaminoImagen(tetriminoActual.getCaminoImagenColor());
 			miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
 		}
-		
-		generarSiguienteTetrimino();
-		
 	}
 	
 	public void rotarDerecha() {
@@ -296,7 +351,7 @@ public class Grilla {
 				System.out.println("F");
 				miJuego.finalizarPartida();
 			} else {
-				//Checkeo de Filas
+				generarSiguienteTetrimino();
 			}
 		}
 	}
@@ -342,29 +397,30 @@ public class Grilla {
 	}**/
 	
 	private boolean posicionesLibres(Position[] ps) {
-		
-		boolean result = true;
-		int fila,columna;
-		
-		for(int i = 0; (i < ps.length) && result; i++) {
-			fila=ps[i].getFila();
-			columna=ps[i].getColumna();
-			
-			if(0<=fila && fila<=21 && 0<=columna && columna<=10) {
-				if (!(matrizGrilla[fila][columna].estaLibre())) {
-					result = false;
-				}
-			} else {
-				result = false;
-			}
-		}
-		
-		return result;
-	}
-	
-	private boolean perdio() {
-		return false;
-	}
+
+        boolean result = true;
+        int fila,columna;
+
+        for(int i = 0; (i < ps.length) && result; i++) {
+            fila=ps[i].getFila();
+            columna=ps[i].getColumna();
+
+            if(0<=fila && fila<10 && 0<=columna && columna<21) {
+                if (!(matrizGrilla[fila][columna].estaLibre())) {
+                    result = false;
+                }
+            } else {
+                result = false;
+            }
+        }
+
+        return result;
+    }
+
+    private boolean perdio() {
+    	//Si NO se puede generar el siguiente tetrimino, el jugador perdio su partida.
+    	return !posicionesLibres(tetriminoSiguiente.getPosicionesActuales());
+    }
 	
 	private boolean lineaCompleta(int linea) {
 		boolean cumple=true;
@@ -380,7 +436,16 @@ public class Grilla {
 	}
 	
 	private void generarSiguienteTetrimino() {
+		tetriminoActual = tetriminoSiguiente;
+		tetriminoSiguiente = getRandomTetrimino();
 		
+		miJuego.actualizarSiguienteTetrimino(tetriminoSiguiente.getCaminoImagenTetrimino());
+		
+		for(Bloque b : tetriminoActual.getBloquesActuales()) {
+			b.ocupar();
+			b.setCaminoImagen(tetriminoActual.getCaminoImagenColor());
+			miJuego.pedirActualizar(b.getPosicion(), b.getCaminoImagen());
+		}
 	}
 	
 	// Esta funcion lo que va a hacer es que le ingresas un arreglo con todas las filas y te va a devolver el mismo arreglo pero si hay filas repetidas les va a poner un -1
