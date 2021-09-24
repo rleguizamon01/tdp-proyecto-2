@@ -18,7 +18,7 @@ public class Juego {
 	}
 	
 	public void iniciarPartida() {
-		this.miReloj.run();
+		this.miReloj.start();
 	}
 	
 	public void finalizarPartida() {
@@ -46,9 +46,7 @@ public class Juego {
 	}
 	
 	public void pedirActualizar(Position pos, String imagePath) {
-		
 		this.miGui.actualizar(pos, imagePath);
-	
 	}
 	
 	public void pedirActualizar(Position[] pos, String imagePath) {

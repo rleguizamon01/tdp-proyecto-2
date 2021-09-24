@@ -58,6 +58,7 @@ public class GUI {
 	public GUI() {
 		initialize();
 		miJuego = new Juego(this);
+		miJuego.iniciarPartida();
 	}
 
 	/**
@@ -85,7 +86,7 @@ public class GUI {
 		lblProximoTetrimino.setBorder(new LineBorder(new Color(0, 0, 0)));
 		informacion.add(lblProximoTetrimino);
 		
-		lblReloj = new JLabel("Reloj");
+		lblReloj = new JLabel("00:00");
 		lblReloj.setHorizontalAlignment(SwingConstants.CENTER);
 		lblReloj.setBounds(10, 107, 84, 23);
 		lblReloj.setBorder(new LineBorder(new Color(0, 0, 0)));
