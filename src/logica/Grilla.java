@@ -1,5 +1,7 @@
 package logica;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 import tetrimino.*;
@@ -53,8 +55,8 @@ public class Grilla {
 	
 	private Tetrimino getRandomTetrimino() {
 		Tetrimino t;
-		int i = ThreadLocalRandom.current().nextInt(0, 7);
-		
+		//int i = ThreadLocalRandom.current().nextInt(0, 7); DEBUGEAR 
+		int i = 0; // COMENTAR ESTA LINEA Y DESCOMENTAR LA ANTERIOR 
 		t = posiblesTetriminos[i].clone();
 		Position[] pos = posiblesPosicionesIniciales[i];
 		
@@ -351,6 +353,12 @@ public class Grilla {
 				System.out.println("F");
 				miJuego.finalizarPartida();
 			} else {
+				int filas[] = {posicionesActuales[0].getColumna(),posicionesActuales[1].getColumna(),posicionesActuales[2].getColumna(),posicionesActuales[3].getColumna()};
+				ArrayList<Integer> filasSinRepeticion = eliminarRepeticionFilas(filas);
+				ArrayList<Integer> filasCompletadas = filasCompletas(filasSinRepeticion);
+				if(filasCompletadas.size() > 0)
+					eliminarFilasCompletadas(filasCompletadas);
+				
 				generarSiguienteTetrimino();
 			}
 		}
@@ -422,17 +430,87 @@ public class Grilla {
     	return !posicionesLibres(tetriminoSiguiente.getPosicionesActuales());
     }
 	
-	private boolean lineaCompleta(int linea) {
-		boolean cumple=true;
-		for(int i=0;(i<matrizGrilla[linea].length) && cumple;i++) 
-			if (!matrizGrilla[linea][i].estaLibre())
-				cumple=false;
-		return cumple;
+	/**
+	 * Elimina las filas que están completadas
+	 * @param filasCompletadas filas a borrar
+	 */
+	private void eliminarFilasCompletadas(ArrayList<Integer> filasCompletadas) {
+		int saltoDeFila = 1;
+		int cantFilasCompletadas = filasCompletadas.size();
+		ArrayList<Integer> filasCompletadasDesc = filasCompletadas;
+		Collections.sort(filasCompletadasDesc, Collections.reverseOrder());  
+		
+		// Comienza el bucle por la fila completada que está "más abajo" (la mayor) y va subiendo
+		for(int fila = filasCompletadasDesc.get(0); fila >= 0; fila--) {
+			// Si la fila recorrida es de las superiores (más arriba) se debe desocupar, simulando que crea una fila nueva
+			if(fila < cantFilasCompletadas)
+				desocuparFila(fila);
+			// Sino, debe copiar a una fila superior que no sea otra fila completa (si lo es, aumenta el salto de fila para esquivarla)
+			else {
+				while(filasCompletadas.contains(fila - saltoDeFila))
+					saltoDeFila++;
+				copiarFila(fila, fila - saltoDeFila);
+			}
+		}
 	}
 	
-	private void limpiarLinea(int linea) {
-		for(int i=0;(i<matrizGrilla[linea].length);i++) 
-			matrizGrilla[linea][i].desocupar();
+	/**
+     * Chequea si determinadas filas están completas y devuelve un ArrayList de las que sí lo están
+     * @param filasTotalesAfectadas filas a chequear si están completas o no
+     * @return ArrayList de las filas que sí están completas
+     */
+	private ArrayList<Integer> filasCompletas(ArrayList<Integer> filasTotalesAfectadas) {
+		ArrayList<Integer> filasCompletadas = new ArrayList<Integer>();
+		boolean estaCompleta;
+		
+		for(int filaAfectada: filasTotalesAfectadas) {
+			estaCompleta = true;
+			for(int columna = 0; columna < matrizGrilla.length && estaCompleta; columna++)
+				if(matrizGrilla[columna][filaAfectada].estaLibre())
+					estaCompleta = false;
+			if(estaCompleta)
+				filasCompletadas.add(filaAfectada);
+		}
+		return filasCompletadas;
+	}
+	
+	/**
+	 * Filtra las repeticiones de filas dentro de un arreglo y devuelve un ArrayList sin las repeticiones
+	 * @param filas arreglo de filas con posibles elementos repetidos
+	 * @return ArrayList de filas sin repeticiones
+	 */
+	private ArrayList<Integer> eliminarRepeticionFilas(int[] filas) {
+		ArrayList<Integer> filasSinRepeticion = new ArrayList<Integer>();
+		
+		for(int fila: filas)
+			if(!filasSinRepeticion.contains(fila))
+				filasSinRepeticion.add(fila);
+	
+		return filasSinRepeticion;
+	}
+
+	/**
+	 * Modifica una fila entera copiando el valor de otra y llama a Juego para notificar el cambio
+	 * @param filaOrigen fila que se va a modificar copiando los valores de filaACopiar
+	 * @param filaACopiar fila cuyos valores son copiados
+	 */
+	private void copiarFila(int filaOrigen, int filaACopiar) {
+		for(int columna = 0; columna < matrizGrilla.length; columna++) {
+			matrizGrilla[columna][filaOrigen].copy(matrizGrilla[columna][filaACopiar]);
+			miJuego.pedirActualizar(matrizGrilla[columna][filaOrigen].getPosicion(), matrizGrilla[columna][filaOrigen].getCaminoImagen());
+		}
+	}
+	
+	/**
+	 * Modifica una fila entera para que cada bloque esté desocupado y muestre un bloque vacío, y notifica a Juego el cambio
+	 * @param fila fila a desocupar
+	 */
+	private void desocuparFila(int fila) {
+		for(int columna = 0; columna < matrizGrilla.length; columna++) {
+			matrizGrilla[columna][fila].desocupar();
+			matrizGrilla[columna][fila].setCaminoImagen("/assets/images/bloqueVacio.png");
+			miJuego.pedirActualizar(matrizGrilla[columna][fila].getPosicion(), matrizGrilla[columna][fila].getCaminoImagen());
+		}
 	}
 	
 	private void generarSiguienteTetrimino() {
@@ -448,21 +526,6 @@ public class Grilla {
 		}
 	}
 	
-	// Esta funcion lo que va a hacer es que le ingresas un arreglo con todas las filas y te va a devolver el mismo arreglo pero si hay filas repetidas les va a poner un -1
-	private int[] filasSinRepetir(int[] filas) {
-		int nuevo[] = {-1,-1,-1,-1};
-		boolean va=true;
-		for(int i=0;i<4;i++) {
-			va=true;
-			for(int j=i+1;j<4;j++) {
-				if(filas[i]==filas[j])
-					va=false;
-			}
-			if (va)
-				nuevo[i]=filas[i];
-		}
-		return nuevo;
-	}
 	//Esta funcion lo que va a hacer es calcular cuantos puntos le da al jugador dependiendo de cuantas filas hizo
 	private int cuantosPuntos(int filasHechas) {
 		int puntos=0;
