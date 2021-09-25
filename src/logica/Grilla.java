@@ -55,8 +55,8 @@ public class Grilla {
 	
 	private Tetrimino getRandomTetrimino() {
 		Tetrimino t;
-		//int i = ThreadLocalRandom.current().nextInt(0, 7); DEBUGEAR 
-		int i = 0; // COMENTAR ESTA LINEA Y DESCOMENTAR LA ANTERIOR 
+		int i = ThreadLocalRandom.current().nextInt(0, 7); 
+		// int i = 0; // Descomentar para testear con únicamente bloque I
 		t = posiblesTetriminos[i].clone();
 		Position[] pos = posiblesPosicionesIniciales[i];
 		
