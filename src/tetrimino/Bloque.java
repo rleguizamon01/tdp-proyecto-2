@@ -78,4 +78,10 @@ public class Bloque {
 	public void setCaminoImagen(String imagePath) {
 		caminoImagen = imagePath;
 	}
+	
+	public void copy(Bloque bloque) {
+		caminoImagen = bloque.getCaminoImagen();
+		ocupado = bloque.estaOcupado();
+		estatico = bloque.estaEstatico();
+	}
 }
