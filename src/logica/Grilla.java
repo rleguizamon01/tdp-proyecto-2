@@ -64,7 +64,13 @@ public class Grilla {
 		t.setBloqueB(matrizGrilla[pos[1].getFila()][pos[1].getColumna()]);
 		t.setBloqueC(matrizGrilla[pos[2].getFila()][pos[2].getColumna()]);
 		t.setBloqueD(matrizGrilla[pos[3].getFila()][pos[3].getColumna()]);
-		t.actualizarCaminoImagen();
+		
+		for(Bloque b : t.getBloquesActuales()) {
+			//Por ahora, los bloques de este tetrimino no existen. Seran actualizados cuando este pase a ser el siguiente.
+			b.setCaminoImagen("/assets/images/bloqueVacio.png");
+		}
+		
+		//t.actualizarCaminoImagen();
 		
 		return t;
 	}
@@ -515,6 +521,7 @@ public class Grilla {
 	
 	private void generarSiguienteTetrimino() {
 		tetriminoActual = tetriminoSiguiente;
+		tetriminoActual.actualizarCaminoImagen();
 		tetriminoSiguiente = getRandomTetrimino();
 		
 		miJuego.actualizarSiguienteTetrimino(tetriminoSiguiente.getCaminoImagenTetrimino());

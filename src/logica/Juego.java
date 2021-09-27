@@ -53,7 +53,7 @@ public class Juego {
 		}
 	}
 	
-	public void pedirActualizar(Position pos, String imagePath) {
+	public synchronized void pedirActualizar(Position pos, String imagePath) {
 		this.miGui.actualizar(pos, imagePath);
 	}
 	
