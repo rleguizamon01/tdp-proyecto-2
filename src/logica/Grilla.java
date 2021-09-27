@@ -362,9 +362,11 @@ public class Grilla {
 				int filas[] = {posicionesActuales[0].getColumna(),posicionesActuales[1].getColumna(),posicionesActuales[2].getColumna(),posicionesActuales[3].getColumna()};
 				ArrayList<Integer> filasSinRepeticion = eliminarRepeticionFilas(filas);
 				ArrayList<Integer> filasCompletadas = filasCompletas(filasSinRepeticion);
-				if(filasCompletadas.size() > 0)
+				if(filasCompletadas.size() > 0) {
 					eliminarFilasCompletadas(filasCompletadas);
-				
+					miJuego.actualizarPuntaje(cuantosPuntos(filasCompletadas.size()));
+				}
+					
 				generarSiguienteTetrimino();
 			}
 		}
@@ -538,9 +540,13 @@ public class Grilla {
 		int puntos=0;
 		switch (filasHechas) {
 			case 1: puntos=100;
+				break;
 			case 2: puntos=200;
+				break;
 			case 3: puntos=500;
+				break;
 			case 4: puntos=800;
+				break;
 		}
 		return puntos;
 	}

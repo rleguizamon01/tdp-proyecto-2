@@ -101,7 +101,7 @@ public class GUI {
 		lblReloj.setBorder(new LineBorder(new Color(0, 0, 0)));
 		informacion.add(lblReloj);
 		
-		lblPuntaje = new JLabel("Puntaje");
+		lblPuntaje = new JLabel("0");
 		lblPuntaje.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPuntaje.setBounds(10, 141, 84, 23);
 		lblPuntaje.setBorder(new LineBorder(new Color(0, 0, 0)));
