@@ -16,14 +16,15 @@ public class AudioPlayer extends Thread{
 	
 	public void run() {
 		try{
-		    InputStream archivoInputStream = new FileInputStream(nombreDeLaCancion);
-		    Player p = new Player(archivoInputStream);
-		    p.play();
+		    InputStream archivoInputStream = null;
+		    Player p = null;
 		    
-		    while(seDebeReproducir) {
+		    do {
+		    	archivoInputStream = new FileInputStream(nombreDeLaCancion);
+		    	p = new Player(archivoInputStream);
 		    	p.play();
-		    	Thread.sleep(100); //Un pequeño break entre cancion y cancion.
-		    }
+		    	Thread.sleep(2000); //Un pequeño break entre cancion y cancion.
+		    }while(seDebeReproducir);
 		}
 		catch(Exception exc){
 		    exc.printStackTrace();
