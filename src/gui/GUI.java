@@ -21,6 +21,7 @@ import java.awt.event.KeyListener;
 import javax.swing.JToggleButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Toolkit;
 
 public class GUI {	
 	private JFrame frame;
@@ -71,8 +72,11 @@ public class GUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.setBounds(100, 100, 450, 700);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/assets/images/logo.png")));
+		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
 		
 		grilla = new JPanel();
