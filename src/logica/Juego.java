@@ -4,24 +4,36 @@ import gui.GUI;
 import utilidad.*;
 
 public class Juego {
+	private static final boolean MUSICA_POR_DEFECTO = true; //Cambiar esta constante a false si la musica se vuelve molesta durante la correccion!
+	
 	protected int puntaje;
 	protected int dificultad;
 	protected GUI miGui;
 	protected Grilla miGrilla;
 	protected Reloj miReloj;
 	
+	private boolean hayMusica;
+	private AudioPlayer miAudioPlayer;
+	
 	public Juego(GUI gui) {
 		this.miGui = gui;
 		this.miGrilla = new Grilla(this);
 		this.miReloj = new Reloj(this);
-		this.puntaje=0;
+		this.puntaje = 0;
+		this.miAudioPlayer = new AudioPlayer("soundtrack.mp3");
+		this.hayMusica = MUSICA_POR_DEFECTO;
 	}
 	
 	public void iniciarPartida() {
+		if(MUSICA_POR_DEFECTO) {
+			miAudioPlayer.start();
+		}
+		
 		this.miReloj.start();
 	}
 	
 	public void finalizarPartida() {
+		terminarMusica();
 		this.miReloj.setSePuedeJugar(false);
 	}
 	
@@ -68,6 +80,30 @@ public class Juego {
 	
 	public void actualizarSiguienteTetrimino(String nuevoTetrimino) {
 		this.miGui.actualizarSiguienteTetrimino(nuevoTetrimino);
+	}
+	
+	public void iniciarMusica() {
+		if(!hayMusica) {
+			miAudioPlayer = new AudioPlayer("soundtrack.mp3");
+			miAudioPlayer.start();
+			hayMusica = !hayMusica;
+		}
+	}
+	
+	public void terminarMusica() {
+		if(hayMusica) {
+			miAudioPlayer.stop();
+			miAudioPlayer = null;
+			hayMusica = !hayMusica;
+		}
+	}
+	
+	public boolean hayMusica() {
+		return hayMusica;
+	}
+	
+	public void setMusica(boolean b) {
+		hayMusica = b;
 	}
 	
 }

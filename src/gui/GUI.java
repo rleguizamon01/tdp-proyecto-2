@@ -6,24 +6,23 @@ import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import logica.Juego;
-import utilidad.Position;
+import utilidad.*;
 
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import javax.swing.JToggleButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-public class GUI {
-
+public class GUI {	
 	private JFrame frame;
 	private JPanel grilla;
 	private JPanel informacion;
@@ -33,6 +32,7 @@ public class GUI {
 	private JTextArea txtrCreditos;
 	private JLabel[][] matrizLabels;
 	private JTextArea txtrCaptadorDeEventos;
+	private JToggleButton tglbtnMusica;
 	
 	private Juego miJuego;
 	
@@ -58,6 +58,11 @@ public class GUI {
 	public GUI() {
 		initialize();
 		miJuego = new Juego(this);
+		
+		//En caso de que se haya cambiado el valor por defecto de la musica, actualizamos posterior a la inicializacion.
+		actualizarIconoMusica();
+		
+		
 		miJuego.iniciarPartida();
 	}
 
@@ -109,6 +114,23 @@ public class GUI {
 		txtrCaptadorDeEventos.setOpaque(false);
 		txtrCaptadorDeEventos.setBounds(10, 172, 1, 1);
 		informacion.add(txtrCaptadorDeEventos);
+		
+		tglbtnMusica = new JToggleButton("");
+		tglbtnMusica.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(miJuego.hayMusica()) {
+					miJuego.terminarMusica();
+				} else {
+					miJuego.iniciarMusica();
+				}
+				actualizarIconoMusica();
+				txtrCaptadorDeEventos.grabFocus();
+			}
+		});
+		tglbtnMusica.setBounds(34, 175, 36, 36);
+		tglbtnMusica.setIcon(new ImageIcon(GUI.class.getResource("/assets/images/musicaOFF.png")));
+		informacion.add(tglbtnMusica);
 		
 		matrizLabels = new JLabel[10][21];
 		JLabel aux;
@@ -169,6 +191,14 @@ public class GUI {
 		});
 	}
 	
+	private void actualizarIconoMusica() {
+		if(!miJuego.hayMusica()) {
+			tglbtnMusica.setIcon(new ImageIcon(GUI.class.getResource("/assets/images/musicaON.png")));
+		} else {
+			tglbtnMusica.setIcon(new ImageIcon(GUI.class.getResource("/assets/images/musicaOFF.png")));
+		}
+	}
+	
 	public void actualizar(int f, int c, String imagePath) {
 		matrizLabels[f][c].setIcon(new ImageIcon(GUI.class.getResource(imagePath)));
 	}
@@ -188,5 +218,4 @@ public class GUI {
 	public void actualizarSiguienteTetrimino(String nuevoTetriminoImagePath) {
 		lblProximoTetrimino.setIcon(new ImageIcon(GUI.class.getResource(nuevoTetriminoImagePath)));
 	}
-	
 }
