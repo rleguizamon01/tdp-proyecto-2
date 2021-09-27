@@ -26,7 +26,7 @@ public class Reloj extends Thread {
 		try {
 			while(this.sePuedeJugar) {
 				Thread.sleep(intervalo);
-				this.miJuego.pedirMoverAbajo();
+				this.miJuego.mover(1);
 				aux = getTiempoTranscurrido();
 				
 				if(aumentosDeVelocidad < 6 && aux >= maximoMilisegundosAntesDeAumentar) {

@@ -6,6 +6,12 @@ import utilidad.*;
 public class Juego {
 	private static final boolean MUSICA_POR_DEFECTO = true; //Cambiar esta constante a false si la musica se vuelve molesta durante la correccion!
 	
+	private static final int MOVER_ABAJO = 1;
+	private static final int MOVER_IZQUIERDA = 2;
+	private static final int MOVER_DERECHA = 3;
+	private static final int ROTAR_IZQUIERDA = 4;
+	private static final int ROTAR_DERECHA = 5;
+	
 	protected int puntaje;
 	protected int dificultad;
 	protected GUI miGui;
@@ -37,24 +43,14 @@ public class Juego {
 		this.miReloj.setSePuedeJugar(false);
 	}
 	
-	public void pedirRotarDerecha() {
-		this.miGrilla.rotarDerecha();
-	}
-	
-	public void pedirRotarIzquierda() {
-		this.miGrilla.rotarIzquierda();
-	}
-	
-	public void pedirMoverIzquierda() {
-		this.miGrilla.moverIzquierda();
-	}
-	
-	public void pedirMoverDerecha() {
-		this.miGrilla.moverDerecha();
-	}
-	
-	public void pedirMoverAbajo() {
-		this.miGrilla.moverAbajo();
+	public synchronized void mover(int operacion) {
+		switch(operacion) {
+			case MOVER_ABAJO: {this.miGrilla.moverAbajo(); break;}
+			case MOVER_IZQUIERDA : {this.miGrilla.moverIzquierda(); break;}
+			case MOVER_DERECHA : {this.miGrilla.moverDerecha(); break;}
+			case ROTAR_IZQUIERDA : {this.miGrilla.rotarIzquierda(); break;}
+			case ROTAR_DERECHA : {this.miGrilla.rotarDerecha(); break;}
+		}
 	}
 	
 	public void pedirActualizar(Position pos, String imagePath) {
