@@ -160,23 +160,23 @@ public class GUI {
 			    switch( keyCode ) { 
 			        case KeyEvent.VK_DOWN:
 			            System.out.println("Bajar");
-			            miJuego.mover(1);
+			            miJuego.mover(miJuego.MOVER_ABAJO);
 			            break;
 			        case KeyEvent.VK_LEFT:
 			        	System.out.println("Mover Izquierda");
-			        	miJuego.mover(2);
+			        	miJuego.mover(miJuego.MOVER_IZQUIERDA);
 			            break;
 			        case KeyEvent.VK_RIGHT :
 			        	System.out.println("Mover Derecha");
-			        	miJuego.mover(3);
+			        	miJuego.mover(miJuego.MOVER_DERECHA);
 			            break;
 			        case KeyEvent.VK_Z :
 			        	System.out.println("Rotar Izquierda");
-			        	miJuego.mover(4);
+			        	miJuego.mover(miJuego.ROTAR_IZQUIERDA);
 			        	break;
 			        case KeyEvent.VK_X :
 			        	System.out.println("Rotar Derecha");
-			        	miJuego.mover(5);
+			        	miJuego.mover(miJuego.ROTAR_DERECHA);
 			        	break;
 			     }
 			}

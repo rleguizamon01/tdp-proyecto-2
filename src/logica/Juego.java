@@ -6,11 +6,11 @@ import utilidad.*;
 public class Juego {
 	private static final boolean MUSICA_POR_DEFECTO = true; //Cambiar esta constante a false si la musica se vuelve molesta durante la correccion!
 	
-	private static final int MOVER_ABAJO = 1;
-	private static final int MOVER_IZQUIERDA = 2;
-	private static final int MOVER_DERECHA = 3;
-	private static final int ROTAR_IZQUIERDA = 4;
-	private static final int ROTAR_DERECHA = 5;
+	public final int MOVER_ABAJO = 1;
+	public final int MOVER_IZQUIERDA = 2;
+	public final int MOVER_DERECHA = 3;
+	public final int ROTAR_IZQUIERDA = 4;
+	public final int ROTAR_DERECHA = 5;
 	
 	protected int puntaje;
 	protected int dificultad;
