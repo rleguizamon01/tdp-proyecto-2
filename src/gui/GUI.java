@@ -30,6 +30,7 @@ public class GUI {
 	private JLabel lblProximoTetrimino;
 	private JLabel lblReloj;
 	private JLabel lblPuntaje;
+	private JLabel lblGameOver;
 	private JTextArea txtrCreditos;
 	private JLabel[][] matrizLabels;
 	private JTextArea txtrCaptadorDeEventos;
@@ -78,6 +79,13 @@ public class GUI {
 		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/assets/images/logo.png")));
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
+		
+		lblGameOver = new JLabel("");
+		lblGameOver.setBounds(10, 11, 300, 630);
+		ImageIcon imgGameOver = new ImageIcon(GUI.class.getResource("/assets/images/gameOver.png"));
+		lblGameOver.setIcon(imgGameOver);
+		lblGameOver.setVisible(false);
+		frame.getContentPane().add(lblGameOver);
 		
 		grilla = new JPanel();
 		grilla.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -221,5 +229,9 @@ public class GUI {
 	
 	public void actualizarSiguienteTetrimino(String nuevoTetriminoImagePath) {
 		lblProximoTetrimino.setIcon(new ImageIcon(GUI.class.getResource(nuevoTetriminoImagePath)));
+	}
+	
+	public void mostrarDerrota() {
+		lblGameOver.setVisible(true);
 	}
 }

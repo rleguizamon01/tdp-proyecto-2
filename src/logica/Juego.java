@@ -41,6 +41,7 @@ public class Juego {
 	public void finalizarPartida() {
 		terminarMusica();
 		this.miReloj.setSePuedeJugar(false);
+		this.miGui.mostrarDerrota();
 	}
 	
 	public synchronized void mover(int operacion) {
