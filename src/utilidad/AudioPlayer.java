@@ -20,7 +20,7 @@ public class AudioPlayer extends Thread{
 		    Player p = null;
 		    
 		    do {
-		    	archivoInputStream = new FileInputStream(nombreDeLaCancion);
+		    	archivoInputStream = getClass().getResourceAsStream("/musica/" + nombreDeLaCancion);
 		    	p = new Player(archivoInputStream);
 		    	p.play();
 		    	Thread.sleep(2000); //Un pequeño break entre cancion y cancion.
