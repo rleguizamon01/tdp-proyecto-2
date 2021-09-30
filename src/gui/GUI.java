@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,7 +23,7 @@ import java.awt.event.MouseEvent;
 import java.awt.Toolkit;
 
 public class GUI {	
-	private JFrame frame;
+	private JFrame frmTetris;
 	private JPanel grilla;
 	private JPanel informacion;
 	private JLabel lblProximoTetrimino;
@@ -37,6 +36,7 @@ public class GUI {
 	private JToggleButton tglbtnMusica;
 	
 	private Juego miJuego;
+	private JLabel lblMMusica;
 	
 	/**
 	 * Launch the application.
@@ -46,7 +46,7 @@ public class GUI {
 			public void run() {
 				try {
 					GUI window = new GUI();
-					window.frame.setVisible(true);
+					window.frmTetris.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -72,30 +72,31 @@ public class GUI {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 450, 700);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/assets/images/logo.png")));
-		frame.setLocationRelativeTo(null);
-		frame.getContentPane().setLayout(null);
+		frmTetris = new JFrame();
+		frmTetris.setTitle("TETRIS");
+		frmTetris.setResizable(false);
+		frmTetris.setBounds(100, 100, 470, 700);
+		frmTetris.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmTetris.setIconImage(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/assets/images/logo.png")));
+		frmTetris.setLocationRelativeTo(null);
+		frmTetris.getContentPane().setLayout(null);
 		
 		lblGameOver = new JLabel("");
 		lblGameOver.setBounds(10, 11, 300, 630);
 		ImageIcon imgGameOver = new ImageIcon(GUI.class.getResource("/assets/images/gameOver.png"));
 		lblGameOver.setIcon(imgGameOver);
 		lblGameOver.setVisible(false);
-		frame.getContentPane().add(lblGameOver);
+		frmTetris.getContentPane().add(lblGameOver);
 		
 		grilla = new JPanel();
 		grilla.setBorder(new LineBorder(new Color(0, 0, 0)));
 		grilla.setBounds(10, 11, 300, 630);
 		grilla.setLayout(null);
-		frame.getContentPane().add(grilla);
+		frmTetris.getContentPane().add(grilla);
 		
 		informacion = new JPanel();
-		informacion.setBounds(320, 11, 104, 630);
-		frame.getContentPane().add(informacion);
+		informacion.setBounds(320, 11, 124, 630);
+		frmTetris.getContentPane().add(informacion);
 		informacion.setLayout(null);
 		
 		lblProximoTetrimino = new JLabel("Proximo Tetrimino");
@@ -116,9 +117,10 @@ public class GUI {
 		informacion.add(lblPuntaje);
 		
 		txtrCreditos = new JTextArea();
+		txtrCreditos.setBackground(new Color(255, 255, 255));
 		txtrCreditos.setEditable(false);
-		txtrCreditos.setText("Creditos:\nAntich\nDingevan\nFeuilles\nLeguizamon");
-		txtrCreditos.setBounds(10, 450, 84, 169);
+		txtrCreditos.setText(" Creditos:\n Antich\n Dingevan\n Feuilles\n Leguizamon");
+		txtrCreditos.setBounds(10, 532, 104, 98);
 		txtrCreditos.setBorder(new LineBorder(new Color(0, 0, 0)));
 		informacion.add(txtrCreditos);
 		
@@ -143,6 +145,27 @@ public class GUI {
 		tglbtnMusica.setBounds(34, 175, 36, 36);
 		tglbtnMusica.setIcon(new ImageIcon(GUI.class.getResource("/assets/images/musicaOFF.png")));
 		informacion.add(tglbtnMusica);
+		
+		JLabel lblControles = new JLabel("Controles:");
+		lblControles.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblControles.setBounds(10, 222, 84, 23);
+		informacion.add(lblControles);
+		
+		JLabel lblFlechas = new JLabel("Flechas: Mover");
+		lblFlechas.setBounds(10, 250, 104, 23);
+		informacion.add(lblFlechas);
+		
+		JLabel lblRotacionDerecha = new JLabel("X: Rotar Derecha");
+		lblRotacionDerecha.setBounds(10, 271, 104, 23);
+		informacion.add(lblRotacionDerecha);
+		
+		JLabel lblZRotarIzquierda = new JLabel("Z: Rotar Izquierda");
+		lblZRotarIzquierda.setBounds(10, 294, 104, 23);
+		informacion.add(lblZRotarIzquierda);
+		
+		lblMMusica = new JLabel("M: Alternar Musica");
+		lblMMusica.setBounds(10, 317, 114, 23);
+		informacion.add(lblMMusica);
 		
 		matrizLabels = new JLabel[10][21];
 		JLabel aux;
@@ -171,25 +194,29 @@ public class GUI {
 				int keyCode = k.getKeyCode();
 			    switch( keyCode ) { 
 			        case KeyEvent.VK_DOWN:
-			            System.out.println("Bajar");
 			            miJuego.mover(miJuego.MOVER_ABAJO);
 			            break;
 			        case KeyEvent.VK_LEFT:
-			        	System.out.println("Mover Izquierda");
 			        	miJuego.mover(miJuego.MOVER_IZQUIERDA);
 			            break;
 			        case KeyEvent.VK_RIGHT :
-			        	System.out.println("Mover Derecha");
 			        	miJuego.mover(miJuego.MOVER_DERECHA);
 			            break;
 			        case KeyEvent.VK_Z :
-			        	System.out.println("Rotar Izquierda");
 			        	miJuego.mover(miJuego.ROTAR_IZQUIERDA);
 			        	break;
 			        case KeyEvent.VK_X :
-			        	System.out.println("Rotar Derecha");
 			        	miJuego.mover(miJuego.ROTAR_DERECHA);
 			        	break;
+			        case KeyEvent.VK_M :
+			        	if(miJuego.hayMusica()) {
+							miJuego.terminarMusica();
+						} else {
+							miJuego.iniciarMusica();
+						}
+						actualizarIconoMusica();
+						txtrCaptadorDeEventos.grabFocus();
+						break;
 			     }
 			}
 

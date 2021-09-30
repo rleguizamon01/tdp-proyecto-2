@@ -1,6 +1,5 @@
 package utilidad;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 import javazoom.jl.player.Player;
@@ -20,7 +19,7 @@ public class AudioPlayer extends Thread{
 		    Player p = null;
 		    
 		    do {
-		    	archivoInputStream = getClass().getResourceAsStream("/musica/" + nombreDeLaCancion);
+		    	archivoInputStream = AudioPlayer.class.getResourceAsStream("/musica/" + nombreDeLaCancion);
 		    	p = new Player(archivoInputStream);
 		    	p.play();
 		    	Thread.sleep(2000); //Un pequeño break entre cancion y cancion.

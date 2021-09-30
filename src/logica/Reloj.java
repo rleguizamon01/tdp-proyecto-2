@@ -1,6 +1,5 @@
 package logica;
 
-import java.time.format.DateTimeFormatter;
 import java.util.concurrent.TimeUnit;
 
 public class Reloj extends Thread {

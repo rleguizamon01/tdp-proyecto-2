@@ -17,6 +17,9 @@ public class Grilla {
 	private Tetrimino[] posiblesTetriminos;
 	private Position[][] posiblesPosicionesIniciales;
 
+	/**
+	 * Inicializa la grilla con los valores y posiciones por defecto de los tetriminos que seran clonados.
+	 */
 	private void inicializar() {
 		Tetrimino I = new TetriminoI();
 		Tetrimino J = new TetriminoJ();
@@ -53,6 +56,10 @@ public class Grilla {
 		posiblesPosicionesIniciales[6] = posInicialesZ;
 	}
 	
+	/**
+	 * Devuelve un tetrimino aleatorio nuevo.
+	 * @return Un tetrimino aleatorio nuevo.
+	 */
 	private Tetrimino getRandomTetrimino() {
 		Tetrimino t;
 		int i = ThreadLocalRandom.current().nextInt(0, 7); 
@@ -75,6 +82,10 @@ public class Grilla {
 		return t;
 	}
 	
+	/**
+	 * Crea una instancia de la clase Grilla
+	 * @param miJuego instancia de la clase Juego con la que la instancia creada intercambiara mensajes.
+	 */
 	public Grilla(Juego miJuego) {
 		inicializar();
 		
@@ -105,8 +116,10 @@ public class Grilla {
 		}
 	}
 	
+	/**
+	 * Comprueba si el tetrimino actual puede rotar a la derecha, y si puede, efectua ese movimiento.
+	 */
 	public void rotarDerecha() {
-		Position[] posicionesActuales = tetriminoActual.getPosicionesActuales();
 		Position[] posicionesRotadas = tetriminoActual.getRotacionDerecha();
 
 		//posicionesLibres(posicionesRotadas)
@@ -166,8 +179,10 @@ public class Grilla {
 		}
 	}
 	
+	/**
+ 	  * Comprueba si el tetrimino actual puede rotar a la izquierda, y si puede, efectua ese movimiento.
+ 	  */
 	public void rotarIzquierda() {
-		Position[] posicionesActuales = tetriminoActual.getPosicionesActuales();
 		Position[] posicionesRotadas = tetriminoActual.getRotacionIzquierda();
 
 		//posicionesLibres(posicionesRotadas)
@@ -227,8 +242,10 @@ public class Grilla {
 		}
 	}
 	
+	/**
+	 * Comprueba si el tetrimino actual puede moverse a la izquierda, y si puede, efectua ese movimiento.
+	 */
 	public void moverIzquierda() {
-		Position[] posicionesActuales = tetriminoActual.getPosicionesActuales();
 		Position[] posicionesCorridas = tetriminoActual.getPosicionesIzquierda();
 		
 		//posicionesLibres(posicionesCorridas)
@@ -270,8 +287,10 @@ public class Grilla {
 		}
 	}
 	
+	/**
+	 * Comprueba si el tetrimino actual puede moverse a la derecha, y si puede, efectua ese movimiento.
+	 */
 	public void moverDerecha() {
-		Position[] posicionesActuales = tetriminoActual.getPosicionesActuales();
 		Position[] posicionesCorridas = tetriminoActual.getPosicionesDerecha();
 
 		//posicionesLibres(posicionesCorridas)
@@ -313,6 +332,10 @@ public class Grilla {
 		}
 	}
 	
+	/**
+	 * Comprueba si el tetrimino actual puede moverse a la hacia abajo, y si puede, efectua ese movimiento.
+	 * Ademas, maneja las colisiones, comprueba si se perdio o no y pide generar un nuevo tetrimino cuando es necesario.
+	 */
 	public void moverAbajo() {
 		Position[] posicionesActuales = tetriminoActual.getPosicionesActuales();
 		Position[] posicionesCorridas = tetriminoActual.getPosicionesAbajo();
@@ -356,7 +379,6 @@ public class Grilla {
 		} else {
 			tetriminoActual.hacerEstatico();
 			if(perdio()) {
-				System.out.println("F");
 				miJuego.finalizarPartida();
 			} else {
 				int filas[] = {posicionesActuales[0].getColumna(),posicionesActuales[1].getColumna(),posicionesActuales[2].getColumna(),posicionesActuales[3].getColumna()};
@@ -372,46 +394,11 @@ public class Grilla {
 		}
 	}
 	
-	/**public void moverAbajo() {
-		
-		Position[] posicionesActuales = tetriminoActual.getPosicionesActuales();
-		Position[] posicionesAbajo = tetriminoActual.getPosicionesAbajo();
-		
-		if (posicionesLibres(posicionesAbajo)) {
-			
-			tetriminoActual.setBloqueA(matrizGrilla[posicionesAbajo[0].getFila()][posicionesAbajo[0].getColumna()]);
-			tetriminoActual.setBloqueB(matrizGrilla[posicionesAbajo[1].getFila()][posicionesAbajo[1].getColumna()]);
-			tetriminoActual.setBloqueC(matrizGrilla[posicionesAbajo[2].getFila()][posicionesAbajo[2].getColumna()]);
-			tetriminoActual.setBloqueD(matrizGrilla[posicionesAbajo[3].getFila()][posicionesAbajo[3].getColumna()]);
-
-			miJuego.pedirActualizar(posicionesActuales, "/assets/images/bloqueVacio.png");
-			miJuego.pedirActualizar(posicionesAbajo, tetriminoActual.getBloquesActuales()[0].getCaminoImagen());
-		} else {
-			tetriminoActual.hacerEstatico();
-		}
-		
-		posicionesActuales = tetriminoActual.getPosicionesActuales();
-		
-		if (perdio())
-			miJuego.finalizarPartida();
-		else {
-			
-			 
-			int filas[] = {posicionesActuales[0].getFila(),posicionesActuales[1].getFila(),posicionesActuales[2].getFila(),posicionesActuales[3].getFila()};
-			filas=filasSinRepetir(filas);
-			int filasCompletas=0;
-			for(int fila : filas) 
-				if(fila!=-1) 
-					if (lineaCompleta(fila)) {
-						limpiarLinea(fila);
-						filasCompletas++;
-					}
-			miJuego.actualizarPuntaje(cuantosPuntos(filasCompletas));
-			// Hola, por aca iria el tema de actualizar las filas y desplazar todos los bloques como corresponda
-		}
-		
-	}**/
-	
+	/**
+	 * Retorna true si y solo si todas las posiciones que recibe como parametro se corresponden a posiciones de la grilla que estan libres.
+	 * @param ps arreglo de posiciones a comprobar
+	 * @return true si y solo si todas las posiciones que recibe como parametro se corresponden a posiciones de la grilla que estan libres.
+	 */
 	private boolean posicionesLibres(Position[] ps) {
 
         boolean result = true;
@@ -432,7 +419,11 @@ public class Grilla {
 
         return result;
     }
-
+	
+	/**
+	 * Comprueba si el jugador perdio.
+	 * @return true si y solo si no se puede generar un siguiente tetrimino.
+	 */
     private boolean perdio() {
     	//Si NO se puede generar el siguiente tetrimino, el jugador perdio su partida.
     	return !posicionesLibres(tetriminoSiguiente.getPosicionesActuales());
@@ -521,6 +512,10 @@ public class Grilla {
 		}
 	}
 	
+	/**
+	 * Efectiviza el tetrimino "fantasma" almacenado en tetriminoSiguiente, y le asigna uno nuevo, aleatorio.
+	 * Ademas, le pide a Juego que actualice la imagen del tetrimino siguiente.
+	 */
 	private void generarSiguienteTetrimino() {
 		tetriminoActual = tetriminoSiguiente;
 		tetriminoActual.actualizarCaminoImagen();
@@ -535,7 +530,11 @@ public class Grilla {
 		}
 	}
 	
-	//Esta funcion lo que va a hacer es calcular cuantos puntos le da al jugador dependiendo de cuantas filas hizo
+	/**
+	 * Devuelve la cantidad de puntos apropiada a la cantidad de filas comletas.
+	 * @param filasHechas cantidad de filas que han sido eliminadas.
+	 * @return La cantidad de puntos apropiada a la cantidad de filas comletas.
+	 */
 	private int cuantosPuntos(int filasHechas) {
 		int puntos=0;
 		switch (filasHechas) {
